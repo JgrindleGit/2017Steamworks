@@ -15,7 +15,7 @@ void Shooooooter::InitDefaultCommand() {
 	// SetDefaultCommand(new MySpecialCommand());
 }
 void Shooooooter::Shoot(){
-	shoot->Set(-.95);
+	shoot->Set(-.87);
 }
 void Shooooooter::Stop(){
 	shoot->Set(0);

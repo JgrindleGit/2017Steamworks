@@ -1,5 +1,8 @@
 #include "TeleDrive.h"
 
+#define SPEEDS 12.3
+#define SPEEDM 16
+
 TeleDrive::TeleDrive() {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(Robot::chassis.get());
@@ -10,7 +13,9 @@ TeleDrive::TeleDrive() {
 
 // Called just before this Command runs the first time
 void TeleDrive::Initialize() {
-	driveBase->StartTime();
+	driveBase->SetLPID(1.5,0.2,0);
+	driveBase->SetRPID(1.5,0.2,0);
+	driveBase->SetSPID(1,0,0);
 	driveBase->Reset();
 	frc::DriverStation::ReportError("Russians have found IP");
 
@@ -29,19 +34,16 @@ void TeleDrive::Execute() {
 	float drive = driveBase->DzFix(oi->getJ()->GetRawAxis(2),0.04);
 	float turn = driveBase->DzFix(oi->getJ()->GetRawAxis(1),0.04);
 	float strafe = driveBase->DzFix(oi->getJ()->GetRawAxis(0),0.04);
-
+	turn = turn*(SPEEDS/2);
+	drive = drive*SPEEDM;
+	strafe = strafe*SPEEDS;
 	frc::SmartDashboard::PutNumber("kP: ", kP);
 	frc::SmartDashboard::PutNumber("kI: ", kI);
 	frc::SmartDashboard::PutNumber("kD: ", kD);
 
-	if ((abs(drive)>0.05)&&(abs(turn)>0.05)&&(abs(strafe)>0.05)){
-		driveBase->DriveTurn(drive,turn,strafe);
-	}else{
-		driveBase->NoPID(drive,turn);
-		driveBase->Strafe(strafe);
-	}
-
-	//driveBase->DriveTurn(drive,turn,strafe);
+	//if ((abs(drive)>0.05)&&(abs(turn)>0.05)&&(abs(strafe)>0.05)){
+		driveBase->DriveTurn(-drive,-turn,strafe);
+	//}
 }
 
 // Make this return true when this Command no longer needs to run execute()

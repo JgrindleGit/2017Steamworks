@@ -13,6 +13,7 @@ public:
 	Joystick* getJ();
 	JoystickButton* cl;
 	JoystickButton* sh;
+	JoystickButton* in;
 
 };
 

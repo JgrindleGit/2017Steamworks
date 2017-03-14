@@ -9,19 +9,23 @@
 #include "CommandBase.h"
 #include "Commands/AutoDrive.h"
 #include "Commands/teleDrive.h"
-#include "Commands/PIDEdit.h"
+
 
 
 class Robot: public frc::IterativeRobot {
 public:
 	void RobotInit() override {
-		chooser.AddDefault("Default Auto", new AutoDrive());
+
 		// chooser.AddObject("My Auto", new MyAutoCommand());
 		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 		CommandBase::driveBase->Init();
 		CommandBase::shooter->Init();
 		CommandBase::climber->Init();
+		CommandBase::intake->Init();
 
+		chooser.AddDefault("Default Auto", new AutoDrive(CommandBase::driveBase->GetAVG(),6));
+		// chooser.AddObject("My Auto", new MyAutoCommand());
+		frc::SmartDashboard::PutData("Auto Modes", &chooser);
 	}
 
 	/**
@@ -78,8 +82,6 @@ public:
 		}
 		teleD = new TeleDrive();
 		teleD->Start();
-		PIDEd = new PIDEdit();
-		PIDEd->Start();
 	}
 
 	void TeleopPeriodic() override {
@@ -93,7 +95,6 @@ public:
 private:
 	std::unique_ptr<frc::Command> autonomousCommand;
 	Command* teleD;
-	Command* PIDEd;
 	frc::SendableChooser<frc::Command*> chooser;
 };
 

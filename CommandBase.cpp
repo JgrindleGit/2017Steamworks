@@ -3,7 +3,7 @@
 #include <Commands/Scheduler.h>
 
 #include "Subsystems/Drivebase.h"
-//#include "Subsystems/Intake.h"
+#include "Subsystems/Intake.h"
 #include "Subsystems/Climber.h"
 #include "Subsystems/Shooooooter.h"
 
@@ -17,8 +17,8 @@ std::unique_ptr<Climber> CommandBase::climber =
 
 std::unique_ptr<Shooooooter> CommandBase::shooter =
 		std::make_unique<Shooooooter>();
-/*std::unique_ptr<Intake> CommandBase::intake =
-		std::make_unique<Intake>();*/
+std::unique_ptr<Intake> CommandBase::intake =
+		std::make_unique<Intake>();
 
 std::unique_ptr<OI> CommandBase::oi = std::make_unique<OI>();
 

@@ -41,6 +41,7 @@ float PID::pid(float des, float cur)
 	derivative = (err - prevErr)*kD;
 	out = (prop + integral + derivative);
 	prevErr = err;
+	//printf("IwasCalled\n");
 	return out;
 	//tim -= float(timer->Get());
 }
@@ -81,3 +82,6 @@ float PID::GetKI(){
 float PID::GetKD(){
 	return kD;
 }
+/*float PID::GetError(){
+	return err;
+}*/

@@ -23,6 +23,7 @@ private:
 	float kP;
 	float kI;
 	float kD;
+	//float err;
 public:
 	PID();
 	PID(float, float, float);
@@ -33,6 +34,7 @@ public:
 	void TimerStart();
 	void TimerStop();
 	void Reset();
+	//float GetError();
 	float GetKP();
 	float GetKI();
 	float GetKD();

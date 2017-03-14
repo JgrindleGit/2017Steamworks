@@ -25,6 +25,7 @@ private:
 	float SPEEDS;
 public:
 	Drivebase();
+	float GetAVG();
 	void InitDefaultCommand();
 	float constrain(float,float,float);
 	void SetLeft(float);
@@ -51,6 +52,8 @@ public:
 	float GetKP();
 	float GetKI();
 	float GetKD();
+	void DOnePid(float);
+
 
 };
 
