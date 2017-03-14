@@ -34,8 +34,8 @@ void TeleDrive::Execute() {
 	float drive = driveBase->DzFix(oi->getJ()->GetRawAxis(2),0.04);
 	float turn = driveBase->DzFix(oi->getJ()->GetRawAxis(1),0.04);
 	float strafe = driveBase->DzFix(oi->getJ()->GetRawAxis(0),0.04);
-	turn = turn*(SPEEDS/2);
-	drive = drive*SPEEDM;
+	turn = turn*(SPEEDM);
+	drive = (drive*SPEEDS/2);
 	strafe = strafe*SPEEDS;
 	frc::SmartDashboard::PutNumber("kP: ", kP);
 	frc::SmartDashboard::PutNumber("kI: ", kI);

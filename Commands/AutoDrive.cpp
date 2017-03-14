@@ -28,12 +28,11 @@ void AutoDrive::Execute() {
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() {
-	/*if((pidO<0.1)&&(pidO>-0.1)){
+	if((pidO<0.05)&&(pidO>-0.05)){
 		return true;
 	}else {
 		return false;
-	}*/
-	return false;
+	}
 }
 
 // Called once after isFinished returns true
