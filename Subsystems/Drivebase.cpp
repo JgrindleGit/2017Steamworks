@@ -10,9 +10,9 @@ Drivebase::Drivebase() : Subsystem("driveBase") {
 }
 void Drivebase::Init(){
 	if(!defined){
-		rPID = new PID();
-		lPID = new PID();
-		sPID = new PID();
+		rPID = new PID(0.1,0,0);
+		lPID = new PID(0.1,0,0);
+		sPID = new PID(0.1,0,0);
 
 		dPulse = (((uPI*wheelDia)/12)/360);
 		left = new frc::VictorSP(0);
@@ -97,18 +97,38 @@ void Drivebase::NoPID(float Drive,float turn){
 }
 
 void Drivebase::DriveTurn(float Drive, float turn, float s){
-	float l = Drive+turn;
-	float r = -Drive-turn;
-
-	l = constrain(-1,l,1);
-	r = constrain(-1,r,1);
-	s = constrain(-1,s,1);
-	l = l*SPEEDM;
-	r = r*SPEEDM;
-	s = s*SPEEDS;
-	SetSpeedLeft(l);
-	SetSpeedRight(r);
+	float lVal;
+	float rVal;
+	if (Drive > 0.0)
+	{
+		if (turn > 0.0)
+		{
+			lVal = Drive - turn;
+			rVal = max(Drive, turn);
+		}
+		else
+		{
+			lVal = max(Drive, -turn);
+			rVal = Drive + turn;
+		}
+	}
+	else
+	{
+		if (turn > 0.0)
+		{
+			lVal = - max(-Drive, turn);
+			rVal = Drive + turn;
+		}
+		else
+		{
+			lVal = Drive - turn;
+			rVal = - max(-Drive, -turn);
+		}
+	}
+	SetSpeedLeft(lVal);
+	SetSpeedRight(rVal);
 	SetSpeedStrafe(s);
+	printf("Lval: %f Rval: %f",lVal,rVal);
 }
 /*void Drivebase::Move(float Drive, float Turn, float strafe){
 	DriveTurn(Drive,Turn);
@@ -129,6 +149,7 @@ void Drivebase::SetSpeedLeft(float speed){
 		SetLeft(speed/SPEEDM);
 	}*/
 	SetLeft(lVal);
+	printf("left: %f", lVal);
 }
 void Drivebase::SetSpeedRight(float speed){
 	speed = constrain(-SPEEDM, speed, SPEEDM);
@@ -139,6 +160,7 @@ void Drivebase::SetSpeedRight(float speed){
 		SetRight(speed/SPEEDM);
 	}*/
 	SetRight(rVal);
+	printf("right: %f", rVal);
 
 }
 void Drivebase::SetSpeedStrafe(float speed){
@@ -150,7 +172,7 @@ void Drivebase::SetSpeedStrafe(float speed){
 		Strafe(speed/SPEEDS);
 	}*/
 	Strafe(sVal);
-	printf("%f",sVal);
+	printf("Strafe: %f",sVal);
 	printf("\n");
 }
 void Drivebase::SetLPID(float kP,float kI, float kD){
@@ -200,3 +222,13 @@ float Drivebase::GetKI(){
 float Drivebase::GetKD(){
 	return lPID->GetKD();
 }
+float Drivebase::GetAVG(){
+
+	float avg = (((abs(lEncoder->GetDistance()))+(abs(rEncoder->GetDistance())))/2);
+	return avg;
+}
+void Drivebase::DOnePid(float thing){
+
+}
+
+
